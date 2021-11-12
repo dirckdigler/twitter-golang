@@ -1,14 +1,16 @@
 package main
 
 import (
-	"net/http"
+	"log"
+
+	"github.com/dirckdigler/twitter/bd"
+	"github.com/dirckdigler/twitter/handlers"
 )
 
 func main() {
-	http.HandleFunc("/", home)
-	http.ListenAndServe(":3001", nil)
-}
-
-func home(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "./index.html")
+	if bd.CheckConnection() == 0 {
+		log.Fatal("NO connection to the Mongo DataBase")
+		return
+	}
+	handlers.HandlersRoute()
 }
